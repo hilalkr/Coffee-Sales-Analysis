@@ -13,3 +13,9 @@ This is my first project visualizing data using Python's **Matplotlib** and **Se
 
 3. This bar chart visualizes the most popular times of day for each coffee type. Different time periods (Morning, Afternoon, Evening) are represented by colors, showing trends such as "Latte" and "Americano with Milk" being most popular in the morning and afternoon, while "Hot Chocolate" sees higher sales in the evening.
 ![alt text](Images/MostPopularHourforCoffee.png)
+
+4. This bar chart shows the average spending for each payment method (card and cash).
+![alt text](Images/average_expenditure_payment.png)
+
+5. This scatter plot visualizes customer segmentation using the KMeans Algorithm, dividing them into 3 groups (clusters) based on their total spending and purchase frequency. The clusters range from Low (0) to High (2), identifying spending patterns and customer behavior.
+![alt text](Images/average_expenditure_client.png)

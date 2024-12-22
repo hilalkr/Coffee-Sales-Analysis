@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.cluster import KMeans
 
 def categorize_coffee(coffee):
     if coffee in ['Latte', 'Cappuccino', 'Americano with Milk']:
@@ -77,8 +78,52 @@ def coffee_name_category():
     plt.title('Coffee Data')
     plt.show()
 
+#Sales Distribution by Payment Methods
+def average_expenditure_by_payment():
+    df = pd.read_csv("coffee_sales.csv")
+    df.fillna({'cash_type': 'Unknown'}, inplace=True)
+    df.fillna({'money': '0'}, inplace=True)
+    df['cash_type']= df['cash_type'].apply(lambda x: 'Other' if x == 'Unknown' else x)
+    
+    avg_expenditure= df.groupby('cash_type')['money'].mean()
+    
+    plt.figure(figsize=(10,6))
+    avg_expenditure.plot(kind='bar', color = 'skyblue', edgecolor = 'black')
+    
+    #customization chart
+    plt.title('Average Expenditure by Payment Method')
+    plt.xlabel('Payment Method')
+    plt.ylabel('Average Expenditure')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    for index,value in enumerate(avg_expenditure):
+        plt.text(index, value + 0.5, f'{value:.2f}', ha='center', fontsize= 10)
+    
+    plt.tight_layout()
+    plt.show()
+    
+#Average Expenditure Breakdown
+def average_expenditure_by_client():
+    df = pd.read_csv("coffee_sales.csv")
+    customer_summary = df.groupby('card').agg({'money': ['sum', 'count']})
+    customer_summary.columns = ['Total Spent', 'Purchase Count']
+    
+#Customers have been divided into 3 different groups using the KMeans Algorithm, ranging from Low (0) to High (2).
+    kmeans = KMeans(n_clusters=3, random_state = 0)
+    customer_summary['Cluster'] = kmeans.fit_predict(customer_summary)
+    
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='Purchase Count', y='Total Spent', hue='Cluster', data=customer_summary, palette='viridis')
+    plt.title('Customer Segmentation Based on Spending and Purchase Frequency')
+    plt.xlabel('Number of Purchases')
+    plt.ylabel('Total Spending')
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.tight_layout()
+    plt.show()
+    
 if __name__ == "__main__":
-    coffee_name_category()
+    average_expenditure_by_client()
     
     
 
